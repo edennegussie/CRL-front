@@ -14,6 +14,15 @@ A comprehensive web application designed to help individuals find community reso
 
 ## AI USAGE
 - used Cursor AI for pair programming and ChatGPT for coding assistance and bug resolution.
+- it allowed for quick development, as time was of the essence.
+
+
+## 🎨 Design Features
+
+- **Soothing Color Palette**: Blue and green gradient design intended to sooth page visitors.
+- **Modern UI**: Clean, professional interface
+- **Accessibility**: WCAG compliant design
+- **Responsive Layout**: Works on all device sizes
 
 ## 🛠️ Technologies Used
 
@@ -124,9 +133,3 @@ The application expects the following backend endpoints:
 }
 ```
 
-## 🎨 Design Features
-
-- **Soothing Color Palette**: Blue and green gradient design intended to sooth page visitors.
-- **Modern UI**: Clean, professional interface
-- **Accessibility**: WCAG compliant design
-- **Responsive Layout**: Works on all device sizes
