@@ -89,16 +89,35 @@ const Resources = () => {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Crime Resource Locator
-          </h1>
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            Community Resources
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Find the support and services you need. Browse our comprehensive directory of community resources available to help you on your journey.
-          </p>
+        <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-green-50 to-emerald-50 rounded-2xl shadow-lg mb-8">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-0 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+            <div className="absolute top-0 right-0 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
+            <div className="absolute -bottom-8 left-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
+          </div>
+          
+          {/* Content */}
+          <div className="relative px-8 py-12 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-green-500 rounded-full mb-6 shadow-lg">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </div>
+            
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-green-600 to-emerald-600 bg-clip-text text-transparent mb-3">
+              Crime Resource Locator
+            </h1>
+            
+            <h2 className="text-2xl font-semibold text-gray-700 mb-6">
+              Community Resources
+            </h2>
+            
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Find the support and services you need. Browse our comprehensive directory of community resources available to help you on your journey.
+            </p>
+            
+          </div>
         </div>
 
         {/* Loading State */}
