@@ -69,8 +69,8 @@ export const fetchResources = async (filters = {}) => {
   
   // Construct the endpoint with query parameters
   const endpoint = queryParams.toString() 
-    ? `/resources?${queryParams.toString()}`
-    : '/resources';
+    ? `resources?${queryParams.toString()}`
+    : 'resources';
   
   const response = await apiRequest(endpoint);
   
@@ -88,7 +88,7 @@ export const fetchResources = async (filters = {}) => {
  * @returns {Promise<Object>} Object with categories and locations arrays
  */
 export const fetchFilterOptions = async () => {
-  const response = await apiRequest('/resources/filters');
+  const response = await apiRequest('resources/filters');
   
   // Handle the API response format with success/data wrapper
   if (response.success && response.data) {
