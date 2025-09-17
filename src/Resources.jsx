@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchResources } from './utils';
+import { fetchResources, fetchFilterOptions } from './service';
 
 const Resources = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -8,6 +8,8 @@ const Resources = () => {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filterOptions, setFilterOptions] = useState({ categories: [], locations: [] });
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   // Fallback sample data in case API is not available
   const fallbackResources = [ ];
@@ -19,7 +21,13 @@ const Resources = () => {
         setLoading(true);
         setError(null);
         
-        const data = await fetchResources();
+        // Pass current filters to the API
+        const filters = {
+          location: selectedCity !== 'All' ? selectedCity : undefined,
+          category: selectedCategory !== 'All' ? selectedCategory : undefined
+        };
+        
+        const data = await fetchResources(filters);
         setResources(data);
       } catch (err) {
         console.error('Error fetching resources:', err);
@@ -32,20 +40,49 @@ const Resources = () => {
     };
 
     loadResources();
+  }, [selectedCategory, selectedCity]); // Refetch when filters change
+
+  // Fetch filter options on component mount
+  useEffect(() => {
+    const loadFilterOptions = async () => {
+      try {
+        const options = await fetchFilterOptions();
+        setFilterOptions(options);
+      } catch (err) {
+        console.error('Error fetching filter options:', err);
+        // Fallback: extract from current resources
+        const categories = [...new Set(resources.map(resource => resource.category))];
+        const locations = [...new Set(resources.map(resource => resource.location))];
+        setFilterOptions({ categories, locations });
+      }
+    };
+
+    loadFilterOptions();
   }, []);
 
-  // Get unique categories and locations for filters
-  const categories = ['All', ...new Set(resources.map(resource => resource.category))];
-  const locations = ['All', ...new Set(resources.map(resource => resource.location))];
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
 
-  // Filter resources based on selected filters and search term
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Get unique categories and locations for filters (with fallback)
+  const categories = ['All', ...(filterOptions.categories.length > 0 
+    ? filterOptions.categories 
+    : [...new Set(resources.map(resource => resource.category))])];
+  const locations = ['All', ...(filterOptions.locations.length > 0 
+    ? filterOptions.locations 
+    : [...new Set(resources.map(resource => resource.location))])];
+
+  // Filter resources based on search term (backend handles category/location filtering)
   const filteredResources = resources.filter(resource => {
-    const matchesCategory = selectedCategory === 'All' || resource.category === selectedCategory;
-    const matchesLocation = selectedCity === 'All' || resource.location === selectedCity;
-    const matchesSearch = resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         resource.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = resource.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                         resource.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
     
-    return matchesCategory && matchesLocation && matchesSearch;
+    return matchesSearch;
   });
 
   return (
@@ -53,9 +90,12 @@ const Resources = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Community Resources
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Crime Resource Locator
           </h1>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            Community Resources
+          </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Find the support and services you need. Browse our comprehensive directory of community resources available to help you on your journey.
           </p>
