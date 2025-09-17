@@ -1,4 +1,4 @@
-import Resources from './Resources'
+import Resources from './pages/Resources'
 import './App.css'
 
 function App() {
