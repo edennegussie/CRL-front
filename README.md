@@ -12,6 +12,9 @@ A comprehensive web application designed to help individuals find community reso
 - **24/7 Availability Indicators**: Visual indicators for round-the-clock services
 - **Contact Information**: Direct access to phone numbers and websites
 
+## AI USAGE
+- used Cursor AI for pair programming and ChatGPT for coding assistance and bug resolution.
+
 ## 🛠️ Technologies Used
 
 ### Frontend
