@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { fetchResources, fetchFilterOptions } from '../service';
+import { fetchResources } from '../service/api';
 
 const Resources = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedCity, setSelectedCity] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [resources, setResources] = useState([]);
+  const [initialLocations, setInitialLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filterOptions, setFilterOptions] = useState({ categories: [], locations: [] });
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   // Fallback sample data in case API is not available
@@ -29,6 +29,9 @@ const Resources = () => {
         
         const data = await fetchResources(filters);
         setResources(data);
+     
+        if(initialLocations.length === 0)
+          setInitialLocations([...new Set(data.map(d => d.location))]);
       } catch (err) {
         console.error('Error fetching resources:', err);
         setError(err.message);
@@ -41,24 +44,6 @@ const Resources = () => {
 
     loadResources();
   }, [selectedCategory, selectedCity]); // Refetch when filters change
-
-  // Fetch filter options on component mount
-  useEffect(() => {
-    const loadFilterOptions = async () => {
-      try {
-        const options = await fetchFilterOptions();
-        setFilterOptions(options);
-      } catch (err) {
-        console.error('Error fetching filter options:', err);
-        // Fallback: extract from current resources
-        const categories = [...new Set(resources.map(resource => resource.category))];
-        const locations = [...new Set(resources.map(resource => resource.location))];
-        setFilterOptions({ categories, locations });
-      }
-    };
-
-    loadFilterOptions();
-  }, []);
 
   // Debounce search term
   useEffect(() => {
@@ -73,12 +58,8 @@ const Resources = () => {
   const predefinedCategories = ['domestic-violence', 'mental-health', 'legal-aid', 'housing'];
   
   // Get unique categories and locations for filters (with fallback)
-  const categories = ['All', ...(filterOptions.categories.length > 0 
-    ? filterOptions.categories 
-    : predefinedCategories)];
-  const locations = ['All', ...(filterOptions.locations.length > 0 
-    ? filterOptions.locations 
-    : [...new Set(resources.map(resource => resource.location))])];
+  const categories = ['All', ...predefinedCategories];
+ const locations = ['All', ...initialLocations];
 
   // Filter resources based on search term (backend handles category/location filtering)
   const filteredResources = resources.filter(resource => {
@@ -175,7 +156,7 @@ const Resources = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
+                  <option key={category} value={category}>{category+"llllllll"}</option>
                 ))}
               </select>
             </div>
