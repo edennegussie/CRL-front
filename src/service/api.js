@@ -72,6 +72,8 @@ export const fetchResources = async (filters = {}) => {
     ? `/resources?${queryParams.toString()}`
     : '/resources';
   
+    console.log(endpoint);
+
   const response = await apiRequest(endpoint);
   
   // Handle the API response format with success/data wrapper
@@ -83,18 +85,18 @@ export const fetchResources = async (filters = {}) => {
   return response;
 };
 
-/**
- * Fetch all available categories and locations for filter dropdowns
- * @returns {Promise<Object>} Object with categories and locations arrays
- */
-export const fetchFilterOptions = async () => {
-  const response = await apiRequest('/resources/filters');
+// /**
+//  * Fetch all available categories and locations for filter dropdowns
+//  * @returns {Promise<Object>} Object with categories and locations arrays
+//  */
+// export const fetchFilterOptions = async () => {
+//   const response = await apiRequest('/resources/filters');
   
-  // Handle the API response format with success/data wrapper
-  if (response.success && response.data) {
-    return response.data;
-  }
+//   // Handle the API response format with success/data wrapper
+//   if (response.success && response.data) {
+//     return response.data;
+//   }
   
-  // Fallback if response format is different
-  return response;
-};
+//   // Fallback if response format is different
+//   return response;
+// };
