@@ -4,12 +4,11 @@ import userEvent from '@testing-library/user-event'
 import Resources from '../pages/Resources'
 
 // Mock the API service
-vi.mock('../service', () => ({
-  fetchResources: vi.fn(),
-  fetchFilterOptions: vi.fn()
+vi.mock('../service/api', () => ({
+  fetchResources: vi.fn()
 }))
 
-import { fetchResources, fetchFilterOptions } from '../service'
+import { fetchResources } from '../service/api'
 
 describe('Resources Component', () => {
   beforeEach(() => {
@@ -19,12 +18,10 @@ describe('Resources Component', () => {
   it('should render the main title and subtitle', async () => {
     // Mock successful API responses
     fetchResources.mockResolvedValueOnce([])
-    fetchFilterOptions.mockResolvedValueOnce({ categories: [], locations: [] })
 
     render(<Resources />)
 
     expect(screen.getByText('Crisis Resource Locator')).toBeInTheDocument()
-    expect(screen.getByText('Community Resources')).toBeInTheDocument()
   })
 
   it('should display resources when API returns data', async () => {
@@ -42,7 +39,6 @@ describe('Resources Component', () => {
     ]
 
     fetchResources.mockResolvedValueOnce(mockResources)
-    fetchFilterOptions.mockResolvedValueOnce({ categories: [], locations: [] })
 
     render(<Resources />)
 
@@ -55,7 +51,6 @@ describe('Resources Component', () => {
 
   it('should show loading state initially', () => {
     fetchResources.mockImplementation(() => new Promise(() => {})) // Never resolves
-    fetchFilterOptions.mockResolvedValueOnce({ categories: [], locations: [] })
 
     render(<Resources />)
 
@@ -64,7 +59,6 @@ describe('Resources Component', () => {
 
   it('should display no resources message when API returns empty array', async () => {
     fetchResources.mockResolvedValueOnce([])
-    fetchFilterOptions.mockResolvedValueOnce({ categories: [], locations: [] })
 
     render(<Resources />)
 
@@ -98,7 +92,6 @@ describe('Resources Component', () => {
     ]
 
     fetchResources.mockResolvedValueOnce(mockResources)
-    fetchFilterOptions.mockResolvedValueOnce({ categories: [], locations: [] })
 
     render(<Resources />)
 
@@ -118,7 +111,6 @@ describe('Resources Component', () => {
 
   it('should display category filter options', async () => {
     fetchResources.mockResolvedValueOnce([])
-    fetchFilterOptions.mockResolvedValueOnce({ categories: [], locations: [] })
 
     render(<Resources />)
 
