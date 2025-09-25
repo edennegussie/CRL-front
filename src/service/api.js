@@ -1,7 +1,7 @@
 // API utility functions for connecting to the backend
 
 // Get API base URL from environment variables, fallback to localhost
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL.replace(/\/$/, '');;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL.replace(/\/$/, '');
 
 /**
  * Generic API request function
@@ -12,32 +12,24 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL.replace(/\/$/, '');;
 export const apiRequest = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   
-  const defaultOptions = {
+  const config = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
 
-  const config = {
-    ...defaultOptions,
-    ...options,
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers,
-    },
-  };
-
   try {
     const response = await fetch(url, config);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const data = await response.json();
     return data;
+
   } catch (error) {
-    console.error(`API request failed for ${endpoint}:`, error);
+      console.error(`API request failed for ${endpoint}:`, error);
     throw error;
   }
 };
@@ -56,9 +48,10 @@ export const apiRequest = async (endpoint, options = {}) => {
  * - fetchResources({ location: "National", category: "mental-health" }) - Get national mental health resources
  */
 export const fetchResources = async (filters = {}) => {
+
   // Build query string from filters
   const queryParams = new URLSearchParams();
-  
+
   if (filters.location && filters.location !== 'All') {
     queryParams.append('location', filters.location);
   }
@@ -71,8 +64,6 @@ export const fetchResources = async (filters = {}) => {
   const endpoint = queryParams.toString() 
     ? `/resources?${queryParams.toString()}`
     : '/resources';
-  
-    console.log(endpoint);
 
   const response = await apiRequest(endpoint);
   
@@ -84,19 +75,3 @@ export const fetchResources = async (filters = {}) => {
   // Fallback if response format is different
   return response;
 };
-
-// /**
-//  * Fetch all available categories and locations for filter dropdowns
-//  * @returns {Promise<Object>} Object with categories and locations arrays
-//  */
-// export const fetchFilterOptions = async () => {
-//   const response = await apiRequest('/resources/filters');
-  
-//   // Handle the API response format with success/data wrapper
-//   if (response.success && response.data) {
-//     return response.data;
-//   }
-  
-//   // Fallback if response format is different
-//   return response;
-// };

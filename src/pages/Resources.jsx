@@ -56,7 +56,7 @@ const Resources = () => {
 
   // Predefined categories for the application
   const predefinedCategories = ['domestic-violence', 'mental-health', 'legal-aid', 'housing'];
-  
+
   // Get unique categories and locations for filters (with fallback)
   const categories = ['All', ...predefinedCategories];
  const locations = ['All', ...initialLocations];
@@ -156,7 +156,7 @@ const Resources = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 {categories.map(category => (
-                  <option key={category} value={category}>{category+"llllllll"}</option>
+                  <option key={category} value={category}>{category}</option>
                 ))}
               </select>
             </div>
